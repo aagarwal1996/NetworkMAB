@@ -81,7 +81,7 @@ def reward_function(N,connections_dict):
     """
     fourier_coeffs,all_subsets  = generate_fourier_coefficients(N, connections_dict) #N times 2^N
     fourier_characteristics = generate_all_fourier_characteristics(N) #2^N times 2^N
-    reward  = np.dot(fourier_coeffs, fourier_characteristics)
+    reward  = fourier_coeffs @ fourier_characteristics.T
     return reward
 
 def generate_noisy_reward(reward, noise_scale = 1.0):
