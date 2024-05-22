@@ -30,11 +30,6 @@ def calculate_subset_products(x, all_subsets):
     return subset_products
 
 # Example usage
-N = 3
-x = [1, -1, 1]  # Example vector of length N
-all_subsets = generate_all_subsets(N)
-subset_products = calculate_subset_products(x, all_subsets)
-
 
 def generate_fourier_characteristics(X):
     """

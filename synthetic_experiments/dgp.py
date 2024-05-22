@@ -55,7 +55,7 @@ def filter_subsets(connections, all_subsets):
     """
     return [subset for subset in all_subsets if set(subset).issubset(connections)]
 
-def generate_fourier_coefficients(N, connections_dict,seed = 42):
+def generate_fourier_coefficients(N, s,connections_dict,seed = 42):
     """
     Generate a matrix of size N by 2^N with random numbers for the relevant subsets
     """
@@ -75,11 +75,11 @@ def generate_fourier_coefficients(N, connections_dict,seed = 42):
     
     return matrix, all_subsets
 
-def reward_function(N,connections_dict):
+def reward_function(N,s,connections_dict):
     """
     Calculate the reward for a given vector x
     """
-    fourier_coeffs,all_subsets  = generate_fourier_coefficients(N, connections_dict) #N times 2^N
+    fourier_coeffs,all_subsets  = generate_fourier_coefficients(N,s,connections_dict) #N times 2^N
     fourier_characteristics = generate_all_fourier_characteristics(N) #2^N times 2^N
     print("fourier_characteristics", fourier_characteristics.shape)
     print("fourier_coeffs", fourier_coeffs.shape)
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
     print(f"Random Graph: {random_graph}")
 
-    matrix, all_subsets = generate_fourier_coefficients(N, random_graph)
+    matrix, all_subsets = generate_fourier_coefficients(N, s,random_graph)
 
 
     print("Generated Matrix:")
@@ -108,5 +108,5 @@ if __name__ == "__main__":
     print("")
     print("")
 
-    reward = reward_function(N, random_graph)
+    reward = reward_function(N, s,random_graph)
     print(reward.shape)
