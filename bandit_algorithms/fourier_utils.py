@@ -61,7 +61,7 @@ def generate_fourier_characteristics(X):
     return output_matrix
 
 def generate_all_fourier_characteristics(N):
-    all_arms = generate_all_arms(2,N)
+    all_arms = generate_all_arms(N)
     all_arms_boolean_encoding = [2*np.array(arm) - 1 for arm in all_arms]
     all_arms_boolean_encoding = np.vstack(all_arms_boolean_encoding)
     return generate_fourier_characteristics(all_arms_boolean_encoding)

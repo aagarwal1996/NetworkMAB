@@ -10,7 +10,7 @@ from bandit_algorithms.graph_utils import generate_all_arms
 class UCB1:
     def __init__(self, N,num_actions = 2):
         self.n_arms = num_actions**N
-        self.all_arms = generate_all_arms(num_actions,N)
+        self.all_arms = generate_all_arms(N,num_actions)
         self.counts = {arm: 0 for arm in self.all_arms}  # Counts of pulls for each arm
         self.values = {arm: np.zeros(N) for arm in self.all_arms}  # Average rewards for each arm (initialized as zero vectors)
           # Average rewards for each arm (initialized as zero vectors)

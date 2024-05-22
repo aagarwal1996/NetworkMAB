@@ -12,7 +12,7 @@ import networkx as nx
 from itertools import product
 
 
-def generate_all_arms(num_actions, N):
+def generate_all_arms(N,num_actions = 2):
     """
     Generates all possible A^N vectors where A is the number of actions and N is the length of each vector.
     

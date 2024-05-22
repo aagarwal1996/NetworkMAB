@@ -81,27 +81,32 @@ def reward_function(N,connections_dict):
     """
     fourier_coeffs,all_subsets  = generate_fourier_coefficients(N, connections_dict) #N times 2^N
     fourier_characteristics = generate_all_fourier_characteristics(N) #2^N times 2^N
+    print("fourier_characteristics", fourier_characteristics.shape)
+    print("fourier_coeffs", fourier_coeffs.shape)
     reward  = fourier_coeffs @ fourier_characteristics.T
     return reward
 
 def generate_noisy_reward(reward, noise_scale = 1.0):
     return reward + np.random.normal(0, noise_scale, len(reward))
 
-# Example usage
-N = 3
-s = 2
-random_graph = create_graph(N,s)
 
-print(f"Random Graph: {random_graph}")
+if __name__ == "__main__":
+    
+    # Example usage
+    N = 3
+    s = 2
+    random_graph = create_graph(N,s)
 
-matrix, all_subsets = generate_fourier_coefficients(N, random_graph)
+    print(f"Random Graph: {random_graph}")
+
+    matrix, all_subsets = generate_fourier_coefficients(N, random_graph)
 
 
-print("Generated Matrix:")
-print_matrix(matrix, all_subsets)
+    print("Generated Matrix:")
+    print_matrix(matrix, all_subsets)
 
-print("")
-print("")
+    print("")
+    print("")
 
-reward = reward_function(N, random_graph)
-print(reward.shape)
+    reward = reward_function(N, random_graph)
+    print(reward.shape)
