@@ -11,7 +11,6 @@ from bandit_algorithms.fourier_utils import generate_all_fourier_characteristics
 from itertools import chain, combinations
 import random
 import numpy as np
-from itertools import chain, combinations
 
 
 
@@ -55,7 +54,7 @@ def filter_subsets(connections, all_subsets):
     """
     return [subset for subset in all_subsets if set(subset).issubset(connections)]
 
-def generate_fourier_coefficients(N, s,connections_dict,seed = 42):
+def generate_fourier_coefficients(N,s,connections_dict,seed = 42):
     """
     Generate a matrix of size N by 2^N with random numbers for the relevant subsets
     """
