@@ -29,7 +29,6 @@ class UCB1:
             ucb_values[arm] = avg_value + bonus
 
         max_arm = max(ucb_values, key=ucb_values.get)
-        print(max_arm)
         return max_arm
 
     def update(self, chosen_arm, reward):
