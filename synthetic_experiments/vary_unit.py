@@ -19,11 +19,19 @@ from synthetic_experiments.dgp import generate_fourier_coefficients, generate_al
 from synthetic_experiments.dgp import generate_noisy_reward, create_graph,reward_function
 
 
+method_name = {
+    "UCB": "UCB",
+    "Lasso": "Network MAB (Unknown)",
+    "OLS": "Network MAB (Known)",
+    "Global OLS": "Global OLS"
+}
+
+
 if __name__ == "__main__":
     s = 4
-    noise_scale = 0.2
+    noise_scale = 0.7
     iterations = 3
-    N_values = [5, 6, 7, 8, 9]  # List of N values to iterate over
+    N_values = [5,6,7,8,9,10]  # List of N values to iterate over
 
     all_regret_means = {N: {} for N in N_values}
     all_regret_stds = {N: {} for N in N_values}
@@ -89,38 +97,35 @@ if __name__ == "__main__":
         regret_stds = {}
 
         if ucb_regret_all:
-            regret_means['UCB Regret'] = np.mean(ucb_regret_all, axis=0)
-            regret_stds['UCB Regret'] = np.std(ucb_regret_all, axis=0)
+            regret_means['UCB'] = np.mean([regret[-1] for regret in ucb_regret_all])
+            regret_stds['UCB'] = np.std([regret[-1] for regret in ucb_regret_all])
         if ols_regret_all:
-            regret_means['OLS Regret'] = np.mean(ols_regret_all, axis=0)
-            regret_stds['OLS Regret'] = np.std(ols_regret_all, axis=0)
+            regret_means['OLS'] = np.mean([regret[-1] for regret in ols_regret_all])
+            regret_stds['OLS'] = np.std([regret[-1] for regret in ols_regret_all])
         if lasso_regret_all:
-            regret_means['Lasso Regret'] = np.mean(lasso_regret_all, axis=0)
-            regret_stds['Lasso Regret'] = np.std(lasso_regret_all, axis=0)
+            regret_means['Lasso'] = np.mean([regret[-1] for regret in lasso_regret_all])
+            regret_stds['Lasso'] = np.std([regret[-1] for regret in lasso_regret_all])
         if global_ols_regret_all:
-            regret_means['Global OLS Regret'] = np.mean(global_ols_regret_all, axis=0)
-            regret_stds['Global OLS Regret'] = np.std(global_ols_regret_all, axis=0)
-
+            regret_means['Global OLS'] = np.mean([regret[-1] for regret in global_ols_regret_all])
+            regret_stds['Global OLS'] = np.std([regret[-1] for regret in global_ols_regret_all])
         all_regret_means[N] = regret_means
         all_regret_stds[N] = regret_stds
-
     # Plotting the regrets for different N values
-    plt.figure(figsize=(12, 8))
+    fig, ax = plt.subplots(figsize=(12, 8))
 
-    for N in N_values:
-        regret_means = all_regret_means[N]
-        regret_stds = all_regret_stds[N]
-        for label, regret_mean in regret_means.items():
-            regret_std = regret_stds[label]
-            plt.plot(regret_mean, label=f'{label} (N={N})', linewidth=2)
-            plt.fill_between(range(len(regret_mean)), regret_mean - regret_std, regret_mean + regret_std, alpha=0.2)
+    for label in regret_means.keys():
+        
+        means = [all_regret_means[N][label] for N in N_values]
+        stds = [all_regret_stds[N][label] for N in N_values]
+        ax.plot(N_values, means, label=method_name[label], linewidth=2, marker='o')
+        ax.fill_between(N_values, np.array(means) - np.array(stds), np.array(means) + np.array(stds), alpha=0.2)
+    ax.set_xlabel('Number of units (N)', fontsize=18)
+    ax.set_ylabel('Cumulative Regret', fontsize=18)
+    ax.tick_params(axis='both', which='major', labelsize=14)
+    ax.legend(fontsize=18)  # Increased legend font size
+    ax.grid(True)
 
-    plt.xlabel('Horizon', fontsize=14)
-    plt.ylabel('Cumulative Regret', fontsize=14)
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
-    plt.legend(fontsize=14)
-    plt.grid(True)
-
+    plt.savefig('regret_comparison_plot.png', bbox_inches='tight')  # Save the plot
     plt.show()
     #plt.title('Regret Comparison of OLS, Lasso, and UCB')
+
