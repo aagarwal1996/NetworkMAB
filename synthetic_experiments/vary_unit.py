@@ -2,26 +2,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
+from itertools import chain, combinations
+
 
 #bandit algorithms
+from bandit_algorithms.graph_utils import generate_all_arms
 from bandit_algorithms.ucb import UCB1
-from bandit_algorithms.exp3 import EXP3
+from bandit_algorithms.exp3 import Exp3
 
-def create_graph(N,s):
-    
-    
-    connections = {}
-    for i in range(N):
-        # Start with a list containing the index itself
-        connections[i] = [i]
-        # Add (s-1) unique random indices
-        connections[i].extend(random.sample([x for x in range(N) if x != i], s - 1))
-    
-    return connections
+#dgp
+from synthetic_experiments.dgp import generate_fourier_coefficients, generate_all_fourier_characteristics
+from synthetic_experiments.dgp import generate_noisy_reward, create_graph
 
-# Example usage
+
 N = 10
 s = 3
 connections = create_graph(N, s)
 for i in range(N):
     print(f"Index {i} is connected to: {connections[i]}")
+

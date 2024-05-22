@@ -4,7 +4,7 @@ import numpy as np
 
 
 #graph imports
-from graph_utils import generate_all_arms
+from bandit_algorithms.graph_utils import generate_all_arms
 
 
 class UCB1:

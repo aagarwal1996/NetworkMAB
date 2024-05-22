@@ -1,6 +1,12 @@
 README.md
 setup.py
+bandit_algorithms/__init__.py
+bandit_algorithms/exp3.py
+bandit_algorithms/graph_utils.py
+bandit_algorithms/ucb.py
 bandit_algorithms.egg-info/PKG-INFO
 bandit_algorithms.egg-info/SOURCES.txt
 bandit_algorithms.egg-info/dependency_links.txt
 bandit_algorithms.egg-info/top_level.txt
+synthetic_experiments/__init__.py
+synthetic_experiments/vary_unit.py

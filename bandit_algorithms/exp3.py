@@ -5,7 +5,7 @@ import pandas as pd
 import pprint, random
 
 #graph imports
-from graph_utils import generate_all_arms
+from bandit_algorithms.graph_utils import generate_all_arms
 
 class Exp3:
     def __init__(self,N,num_actions = 2,gamma = 0.1,seed = 42):
