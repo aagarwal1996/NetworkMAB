@@ -53,7 +53,7 @@ class lasso_graph:
         estimated_fourier_coeffs = np.zeros((self.N,2**self.N))
         for i in range(self.N):
             print("progress", i)
-            unit_n_lasso = LassoCV(cv = 3,fit_intercept=False,n_jobs=-1)
+            unit_n_lasso = LassoCV(cv = 3,fit_intercept=False) #,n_jobs=-1
             unit_n_lasso.fit(fourier_characteristics, observed_rewards[:,i])
             estimated_fourier_coeffs[i,:] = unit_n_lasso.coef_
         fourier_characters = generate_all_fourier_characteristics(self.N)

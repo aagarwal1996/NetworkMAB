@@ -70,7 +70,7 @@ def generate_fourier_coefficients(N,s,connections_dict,seed = 42):
         filtered_subsets = filter_subsets(connections, all_subsets)
         for subset in filtered_subsets:
             subset_index = all_subsets.index(subset)
-            matrix[index][subset_index] = random.uniform(0, 1)
+            matrix[index][subset_index] = random.uniform(0, 1/s)
     
     return matrix, all_subsets
 
