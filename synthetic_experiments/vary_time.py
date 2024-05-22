@@ -19,13 +19,20 @@ from synthetic_experiments.dgp import generate_fourier_coefficients, generate_al
 from synthetic_experiments.dgp import generate_noisy_reward, create_graph,reward_function
 
 
+method_name = {
+    "UCB": "UCB",
+    "Lasso": "Network MAB (Unknown)",
+    "OLS": "Network MAB (Known)",
+    "Global OLS": "Global OLS"
+}
+
 
 if __name__ == "__main__":
-    N = 9
+    N = 8
     s = 4
     T = (2**N)*11
     n_arms = 2**N
-    noise_scale = 0.2
+    noise_scale = 1.0
     iterations = 3
 
     ucb_regret_all = []
@@ -87,34 +94,34 @@ if __name__ == "__main__":
     regret_stds = {}
 
     if ucb_regret_all:
-        regret_means['UCB Regret'] = np.mean(ucb_regret_all, axis=0)
-        regret_stds['UCB Regret'] = np.std(ucb_regret_all, axis=0)
+        regret_means['UCB'] = np.mean(ucb_regret_all, axis=0)
+        regret_stds['UCB'] = np.std(ucb_regret_all, axis=0)
     if ols_regret_all:
-        regret_means['OLS Regret'] = np.mean(ols_regret_all, axis=0)
-        regret_stds['OLS Regret'] = np.std(ols_regret_all, axis=0)
+        regret_means['OLS'] = np.mean(ols_regret_all, axis=0)
+        regret_stds['OLS'] = np.std(ols_regret_all, axis=0)
     if lasso_regret_all:
-        regret_means['Lasso Regret'] = np.mean(lasso_regret_all, axis=0)
-        regret_stds['Lasso Regret'] = np.std(lasso_regret_all, axis=0)
+        regret_means['Lasso'] = np.mean(lasso_regret_all, axis=0)
+        regret_stds['Lasso'] = np.std(lasso_regret_all, axis=0)
     if global_ols_regret_all:
-        regret_means['Global OLS Regret'] = np.mean(global_ols_regret_all, axis=0)
-        regret_stds['Global OLS Regret'] = np.std(global_ols_regret_all, axis=0)
+        regret_means['Global OLS'] = np.mean(global_ols_regret_all, axis=0)
+        regret_stds['Global OLS'] = np.std(global_ols_regret_all, axis=0)
 
     # Plotting the regrets
     plt.figure(figsize=(12, 8))
 
     for label, regret_mean in regret_means.items():
         regret_std = regret_stds[label]
-        plt.plot(regret_mean, label=label, linewidth=2)
+        plt.plot(regret_mean, label=method_name[label], linewidth=2)
         plt.fill_between(range(T), regret_mean - regret_std, regret_mean + regret_std, alpha=0.2)
     
-    plt.xlabel('Horizon', fontsize=14)
-    plt.ylabel('Cumulative Regret', fontsize=14)
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
-    plt.legend(fontsize=14)
+    plt.xlabel('Horizon (T)', fontsize=18)
+    plt.ylabel('Cumulative Regret', fontsize=18)
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    plt.legend(fontsize=18)
     plt.grid(True)
     
+    plt.savefig('regret_horizon.png', bbox_inches='tight')
     plt.show()
-
     #plt.yscale('log')
     #plt.title('Regret Comparison of OLS, Lasso, and UCB')

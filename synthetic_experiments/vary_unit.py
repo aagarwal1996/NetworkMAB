@@ -29,7 +29,7 @@ method_name = {
 
 if __name__ == "__main__":
     s = 4
-    noise_scale = 0.7
+    noise_scale = 1.0
     iterations = 3
     N_values = [5,6,7,8,9,10]  # List of N values to iterate over
 
