@@ -5,6 +5,7 @@ bandit_algorithms/exp3.py
 bandit_algorithms/fourier_utils.py
 bandit_algorithms/graph_utils.py
 bandit_algorithms/known_graph.py
+bandit_algorithms/known_graph_global.py
 bandit_algorithms/ucb.py
 bandit_algorithms/unknown_graph.py
 bandit_algorithms.egg-info/PKG-INFO
@@ -13,4 +14,4 @@ bandit_algorithms.egg-info/dependency_links.txt
 bandit_algorithms.egg-info/top_level.txt
 synthetic_experiments/__init__.py
 synthetic_experiments/dgp.py
-synthetic_experiments/vary_unit.py
+synthetic_experiments/vary_time.py

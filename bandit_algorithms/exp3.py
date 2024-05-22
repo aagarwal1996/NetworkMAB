@@ -35,6 +35,7 @@ class Exp3:
         tot_weight = np.sum(list(self.weights.values()))
         for arm in self.all_arms:
             self.probabilities[arm] = (1-self.gamma)*(self.weights[arm]/tot_weight) + self.gamma/self.n_arms
+        
 
     
     def select_arm(self):
@@ -44,14 +45,14 @@ class Exp3:
         arms_list = list(self.probabilities.keys())
         prob_list = list(self.probabilities.values())
 
-        chosen_arm = np.random.choice(len(arms_list),p=prob_list)
-        return arms_list[chosen_arm]
+        chosen_arm = np.random.choice(len(arms_list),p=prob_list/np.sum(prob_list))
+        return self.all_arms[chosen_arm]
                              
     def update(self,chosen_arm,reward):
         '''
         Updates the weights of the arms
         '''
-        reward = np.sum(reward)
+        reward = np.mean(reward)
         estimated_reward = reward/self.probabilities[chosen_arm]
         self.weights[chosen_arm] = self.weights[chosen_arm]*np.exp(self.gamma*estimated_reward/self.n_arms)
         self._update_probabilities()

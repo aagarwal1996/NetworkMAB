@@ -18,7 +18,7 @@ class lasso_graph:
         self.N = N
         self.n_arms = num_actions**N
         self.all_arms = generate_all_arms(N,num_actions=2)
-        self.explore_horizon = T**(2/3)
+        self.explore_horizon = int(N**(1/3) * T**(2/3))
         self.counts = {arm: 0 for arm in self.all_arms} 
         self.num_pulls = 0
         self.optimal_arm = None

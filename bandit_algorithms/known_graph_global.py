@@ -27,13 +27,13 @@ def filter_subsets(connections, all_subsets):
 
 
 
-class OLS_graph:
+class global_OLS_graph:
     def __init__(self, N,T,connections,num_actions = 2):
         self.N = N
         self.n_arms = num_actions**N
         self.all_arms = generate_all_arms(N,num_actions=2)
         s = len(connections[0])
-        self.explore_horizon = int(s**(1/3) * T**(2/3))
+        self.explore_horizon = s**(1/3) * T**(2/3)
         self.counts = {arm: 0 for arm in self.all_arms} 
         self.num_pulls = 0
         self.optimal_arm = None
@@ -43,6 +43,8 @@ class OLS_graph:
         self.all_arms_to_col_index = {arm: i for i, arm in enumerate(self.all_arms)}
         self.col_index_to_all_arms = {i: arm for i, arm in enumerate(self.all_arms)}
         self.relevant_subsets = self._get_relevant_subsets()
+
+    
     def select_arm(self):
         
         if self.num_pulls < self.explore_horizon:
@@ -66,17 +68,17 @@ class OLS_graph:
         observed_rewards = np.vstack(self.observed_rewards)
         print(fourier_characteristics.shape)
 
-        estimated_fourier_coeffs = np.zeros((self.N,2**self.N))
-        for i in range(self.N):
-            print("progress", i)
-            unit_n_lasso = RidgeCV(fit_intercept=False)
-            masking_vector = self.relevant_subsets[i,:]
-            unit_n_lasso.fit(fourier_characteristics[:,masking_vector == 1], observed_rewards[:,i])
-            dense_coef = np.zeros(2**self.N)
-            dense_coef[masking_vector == 1] = unit_n_lasso.coef_
-            estimated_fourier_coeffs[i,:] = dense_coef
+        estimated_fourier_coeffs = np.zeros(2**self.N)
+       
+        unit_n_lasso = LinearRegression(fit_intercept=False)
+        masking_vector = np.any(self.relevant_subsets == 1, axis=0).astype(int)
+        print(masking_vector)
+        unit_n_lasso.fit(fourier_characteristics[:,masking_vector == 1], np.mean(observed_rewards,axis=1))
+        dense_coef = np.zeros(2**self.N)
+        dense_coef[masking_vector == 1] = unit_n_lasso.coef_
+        estimated_fourier_coeffs = dense_coef
         fourier_characters = generate_all_fourier_characteristics(self.N)
-        estimated_reward  = estimated_fourier_coeffs @ fourier_characters.T
+        estimated_reward  = fourier_characters @ estimated_fourier_coeffs
         estimated_mean_reward = np.mean(estimated_reward, axis=0)
         self.optimal_arm = self.col_index_to_all_arms[np.argmax(estimated_mean_reward)]
         return self.optimal_arm
